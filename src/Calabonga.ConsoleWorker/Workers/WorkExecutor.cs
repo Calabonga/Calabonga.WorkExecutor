@@ -61,8 +61,8 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
         {
             foreach (var work in Works.OrderBy(x => x.OrderIndex))
             {
-                _logger.LogDebug("Execute work {0} in order {1} with timeout {2}", work.Name, work.OrderIndex, work.Timeout);
-                var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(internalCancellationTokenSource.Token);
+                _logger.LogDebug("Current work {0} in order {1} with timeout {2}", work.Name, work.OrderIndex, work.Timeout);
+                var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(internalCancellationTokenSource.Token, _logger);
                 if (!result.IsSuccess)
                 {
                     _logger.LogDebug("Execution work {0} is failed.", work.Name);

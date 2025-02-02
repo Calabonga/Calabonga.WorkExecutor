@@ -6,15 +6,15 @@ namespace Calabonga.ConsoleWorker.App;
 
 public class Work1 : WorkBase<AddressResult>
 {
-    public override int OrderIndex => 0;
+    public override int OrderIndex => 1;
 
-    public override string Name => GetType().Name;
-
-    public override string DisplayName => GetType().AssemblyQualifiedName!;
+    public override string DisplayName => "Work One";
 
     public override async Task<IWorkReport<AddressResult>> RunWorkAsync(CancellationToken cancellationToken)
     {
         await Task.Delay(1900, cancellationToken);
-        return new WorkSuccessReport<AddressResult>(new AddressResult($"{GetType().Name} done"), this);
+        return new WorkSuccessReport<AddressResult>(new AddressResult($"{GetType().Name} DONE"), this);
     }
+
+    public override TimeSpan Timeout => TimeSpan.FromSeconds(5);
 }
