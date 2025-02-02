@@ -1,0 +1,53 @@
+# Данный файл - шаблонная конфигурация CI/CD конвейера. Он может быть изменен по Вашему усмотрению. 
+# Некоторые шаблоны требуют предварительной настройки перед запуском.
+#
+# Подробнее о синтаксисе можно узнать в документации:
+# https://docs.gitflic.ru/cicd/gitflic-ci-yaml
+
+variables:
+  EXE_RELEASE_FOLDER: 'YourApp\bin\Release'
+  MSI_RELEASE_FOLDER: 'Setup\bin\Release'
+  TEST_FOLDER: 'Tests\bin\Release'
+  DEPLOY_FOLDER: 'P:\Projects\YourApp\Builds'
+  NUGET_PATH: 'C:\NuGet\nuget.exe'
+  MSBUILD_PATH: 'C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe'
+  NUNIT_PATH: 'C:\Program Files (x86)\NUnit.org\nunit-console\nunit3-console.exe'
+
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build    
+  script:
+    - $NUGET_PATH restore
+    - $MSBUILD_PATH /p:Configuration=Release
+  artifacts:
+    paths:
+      - ${EXE_RELEASE_FOLDER}\YourApp.exe
+      - ${MSI_RELEASE_FOLDER}\YourAppSetup.msi
+      - ${TEST_FOLDER}\
+
+test-job:
+  stage: test
+  script:
+    - ${NUNIT_PATH} .\${TEST_FOLDER}\Tests.dll
+  artifacts:
+    paths:
+      - '.\TestResult.xml'
+  needs:
+    - build-job
+
+deploy-job:
+  stage: deploy
+  script:
+    - $commitSubject = git log -1 --pretty=%s
+    - $deployFolder = ${DEPLOY_FOLDER} + "\" + ${CI_COMMIT_TAG} + " - " + ${commitSubject} + "\"
+
+    - xcopy /y ".\${EXE_RELEASE_FOLDER}\YourApp.exe" "${deployFolder}"
+    - xcopy /y ".\${MSI_RELEASE_FOLDER}\YourAppSetup.msi" "${deployFolder}"
+    - xcopy /y ".\TestResult.xml" "${deployFolder}"
+  needs:
+    - build-job
+    - test-job
