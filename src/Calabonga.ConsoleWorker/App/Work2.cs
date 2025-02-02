@@ -13,7 +13,7 @@ public class Work2 : WorkBase<AddressResult>
     public override async Task<IWorkReport<AddressResult>> RunWorkAsync(CancellationToken cancellationToken)
     {
         await Task.Delay(2000, cancellationToken);
-        return new WorkSuccessReport<AddressResult>(new AddressResult($"{GetType().Name} DONE"), this);
+        return new WorkSuccessReport<AddressResult>(new AddressResult("The number TWO is DONE."), this);
     }
 
     public override TimeSpan Timeout => TimeSpan.FromSeconds(5);
