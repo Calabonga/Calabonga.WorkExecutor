@@ -28,7 +28,7 @@ public abstract class WorkBase<T> : IWork<T>
     /// <summary>
     /// Name for the rule
     /// </summary>
-    public virtual string Name => $"{GetType().Name}[{Timeout}]";
+    public virtual string Name => GetName();
 
     /// <summary>
     /// Runs current work
@@ -45,23 +45,29 @@ public abstract class WorkBase<T> : IWork<T>
     /// <returns></returns>
     public async Task<IWorkReport<T>> ExecuteWorkAsync(CancellationToken cancellationToken, ILogger logger)
     {
-        var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        //var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         try
         {
-            logger.LogDebug("Executing work {Name} ({Timeout})...", Name, Timeout);
-            var result = await RunWorkAsync(cancellationTokenSource.Token);
-            logger.LogDebug("Work {Name} ({Timeout}) completed.", Name, Timeout);
+            logger.LogDebug("[EXECUTOR] Executing {Name}...", GetName());
+            var result = await RunWorkAsync(cancellationToken);
+            logger.LogDebug("[EXECUTOR] {Name} completed.", GetName());
             return result;
         }
         catch (OperationCanceledException)
         {
-            logger.LogDebug("Work {Name} ({Timeout}) cancelled.", Name, Timeout);
+            logger.LogDebug("[EXECUTOR] {Name} cancelled.", GetName());
             return new WorkCancelledReport<T>(this);
         }
         catch (Exception exception)
         {
-            logger.LogDebug("Work {Name} ({Timeout}) failed.", Name, Timeout);
+            logger.LogDebug("[EXECUTOR] {Name} failed.", GetName());
             return new WorkFailedReport<T>(exception, this);
         }
+    }
+
+    private string GetName()
+    {
+        var name = string.IsNullOrEmpty(DisplayName) ? "WORK" : DisplayName;
+        return $"{name} ({Timeout})";
     }
 }

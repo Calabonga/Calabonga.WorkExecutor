@@ -46,14 +46,14 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     {
         if (!HasWorks && dynamicRules == null)
         {
-            var exception = new WorkerFailedException($"No works were registered for {GetType().Name}");
+            var exception = new WorkerFailedException($"[EXECUTOR] No works were registered for {GetType().Name}");
             _logger.LogError(exception, exception.Message);
             _workReport = new WorkFailedReport<TResult>(exception, null);
         }
 
-        var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
+        //var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
 
-        _logger.LogDebug("Execution Cancellation Token created");
+        _logger.LogDebug("[EXECUTOR] Execution Cancellation Token created");
 
         PrepareAdditionalWorks(dynamicRules);
 
@@ -61,22 +61,22 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
         {
             foreach (var work in Works.OrderBy(x => x.OrderIndex))
             {
-                _logger.LogDebug("Current work {0} in order {1} with timeout {2}", work.Name, work.OrderIndex, work.Timeout);
-                var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(internalCancellationTokenSource.Token, _logger);
+                _logger.LogDebug("[EXECUTOR] Current {0} in order {1}", work.Name, work.OrderIndex);
+                var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(cancellationToken, _logger);
                 if (!result.IsSuccess)
                 {
-                    _logger.LogDebug("Execution work {0} is failed.", work.Name);
+                    _logger.LogDebug("[EXECUTOR] Executing {0} is failed.", work.Name);
                     continue;
                 }
 
-                _logger.LogDebug("Execution work {0} is success.", work.Name);
+                _logger.LogDebug("[EXECUTOR] Executing {0} is success.", work.Name);
                 _workReport = result;
                 break;
             }
         }
         catch (Exception exception) //when (exception is OperationCanceledException) 
         {
-            // ignored
+            _logger.LogError(exception, exception.Message);
         }
     }
 

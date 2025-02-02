@@ -12,7 +12,7 @@ public class Work1 : WorkBase<AddressResult>
 
     public override async Task<IWorkReport<AddressResult>> RunWorkAsync(CancellationToken cancellationToken)
     {
-        await Task.Delay(1900, cancellationToken);
+        await Task.Delay(2000, cancellationToken);
         return new WorkSuccessReport<AddressResult>(new AddressResult($"{GetType().Name} DONE"), this);
     }
 

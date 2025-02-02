@@ -22,7 +22,7 @@ logger.LogInformation("Starting...");
 logger.LogInformation("Total Works: {0}", manager.Works.Count);
 logger.LogInformation("Manager timeout: {0}", manager.Configuration.ExecutionTimeout);
 
-var cancellationTokenSource = new CancellationTokenSource();
+var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(3));
 
 AsyncHelper.RunSync(async () => await manager.ExecuteAsync(cancellationTokenSource.Token));
 
