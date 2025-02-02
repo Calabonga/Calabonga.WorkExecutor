@@ -1,4 +1,4 @@
-﻿namespace Calabonga.ConsoleWorker.Workers;
+﻿namespace Calabonga.ConsoleWorker.Workers.Configurations;
 
 public interface IWorkerConfiguration
 {

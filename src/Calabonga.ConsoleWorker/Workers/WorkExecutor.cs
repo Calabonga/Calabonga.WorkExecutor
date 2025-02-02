@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Calabonga.ConsoleWorker.Workers.Base;
+using Calabonga.ConsoleWorker.Workers.Configurations;
+using Calabonga.ConsoleWorker.Workers.Exceptions;
+using Calabonga.ConsoleWorker.Workers.Results;
+using Calabonga.ConsoleWorker.Workers.Results.Base;
+using Microsoft.Extensions.Logging;
 
 namespace Calabonga.ConsoleWorker.Workers;
 
@@ -14,7 +19,7 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     private readonly TConfiguration _configuration;
     private readonly ILogger<WorkExecutor<TResult, TConfiguration>> _logger;
     private readonly CancellationTokenSource _cancellationTokenSource;
-    private IWorkResult<TResult>? _workResult;
+    private IWorkReport<TResult>? _workReport;
 
     protected WorkExecutor(IEnumerable<IWork<TResult>> works, TConfiguration configuration, ILogger<WorkExecutor<TResult, TConfiguration>> logger)
     {
@@ -26,9 +31,11 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
 
     public IWorkerConfiguration Configuration => _configuration;
 
-    public bool HasResult => _workResult is not null;
+    public bool HasReport => _workReport is not null;
 
-    public TResult? Result => _workResult?.Result;
+    public TResult? Result => _workReport?.Result;
+
+    public IEnumerable<string> Errors => _workReport?.Errors ?? [];
 
     public bool HasWorks => Works.Count > 0;
 
@@ -39,13 +46,42 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     {
         if (!HasWorks && dynamicRules == null)
         {
-            _workResult = new FailedWorkResult<TResult>(["No works found to execute job"]);
+            var exception = new WorkerFailedException($"No works were registered for {GetType().Name}");
+            _logger.LogError(exception, exception.Message);
+            _workReport = new WorkFailedReport<TResult>(exception, null);
         }
 
         var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
 
         _logger.LogDebug("Execution Cancellation Token created");
 
+        PrepareAdditionalWorks(dynamicRules);
+
+        try
+        {
+            foreach (var work in Works.OrderBy(x => x.OrderIndex))
+            {
+                _logger.LogDebug("Execute work {0} in order {1} with timeout {2}", work.Name, work.OrderIndex, work.Timeout);
+                var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(internalCancellationTokenSource.Token);
+                if (!result.IsSuccess)
+                {
+                    _logger.LogDebug("Execution work {0} is failed.", work.Name);
+                    continue;
+                }
+
+                _logger.LogDebug("Execution work {0} is success.", work.Name);
+                _workReport = result;
+                break;
+            }
+        }
+        catch (Exception exception) //when (exception is OperationCanceledException) 
+        {
+            // ignored
+        }
+    }
+
+    private void PrepareAdditionalWorks(IEnumerable<IWork<TResult>>? dynamicRules)
+    {
         if (dynamicRules != null)
         {
             foreach (var work in dynamicRules)
@@ -56,21 +92,6 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
                     Works.Add(work);
                 }
             }
-        }
-
-        foreach (var work in Works.OrderBy(x => x.OrderIndex))
-        {
-            _logger.LogDebug("Execute work {0} in order {1} with timeout {2}", work.Name, work.OrderIndex, work.Timeout);
-            var result = await work.RunWorkAsync(internalCancellationTokenSource.Token);
-            if (!result.IsSuccess)
-            {
-                _logger.LogDebug("Execution work {0} is failed.", work.Name);
-                continue;
-            }
-
-            _logger.LogDebug("Execution work {0} is success.", work.Name);
-            _workResult = result;
-            break;
         }
     }
 

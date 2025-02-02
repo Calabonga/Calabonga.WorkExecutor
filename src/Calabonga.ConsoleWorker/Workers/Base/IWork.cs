@@ -1,4 +1,6 @@
-﻿namespace Calabonga.ConsoleWorker.Workers;
+﻿using Calabonga.ConsoleWorker.Workers.Results.Base;
+
+namespace Calabonga.ConsoleWorker.Workers.Base;
 
 /// <summary>
 /// Work to do
@@ -37,5 +39,5 @@ public interface IWork<T> : IWork
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IWorkResult<T>> RunWorkAsync(CancellationToken cancellationToken);
+    Task<IWorkReport<T>> RunWorkAsync(CancellationToken cancellationToken);
 }

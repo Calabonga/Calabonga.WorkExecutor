@@ -1,4 +1,4 @@
-﻿namespace Calabonga.ConsoleWorker.Workers;
+﻿namespace Calabonga.ConsoleWorker.Workers.Base;
 
 public interface IWorkExecutor<T> where T : class
 {
@@ -23,7 +23,7 @@ public interface IWorkExecutor<T> where T : class
     /// <summary>
     /// Indicated Result obtained
     /// </summary>
-    bool HasResult { get; }
+    bool HasReport { get; }
 
     void AddWorks(IEnumerable<IWork<T>> works);
 }

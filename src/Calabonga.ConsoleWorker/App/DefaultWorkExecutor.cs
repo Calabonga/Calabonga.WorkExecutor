@@ -1,4 +1,6 @@
 ﻿using Calabonga.ConsoleWorker.Workers;
+using Calabonga.ConsoleWorker.Workers.Base;
+using Calabonga.ConsoleWorker.Workers.Configurations;
 using Microsoft.Extensions.Logging;
 
 namespace Calabonga.ConsoleWorker.App;
