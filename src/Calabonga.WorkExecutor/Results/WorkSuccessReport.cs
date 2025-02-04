@@ -1,7 +1,7 @@
-﻿using Calabonga.ConsoleWorker.Workers.Base;
-using Calabonga.ConsoleWorker.Workers.Results.Base;
+﻿using Calabonga.WorkExecutor.Base;
+using Calabonga.WorkExecutor.Results.Base;
 
-namespace Calabonga.ConsoleWorker.Workers.Results;
+namespace Calabonga.WorkExecutor.Results;
 
 /// <summary>
 /// Rule triggered result

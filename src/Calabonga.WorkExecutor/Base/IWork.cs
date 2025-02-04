@@ -1,6 +1,6 @@
-﻿using Calabonga.ConsoleWorker.Workers.Results.Base;
+﻿using Calabonga.WorkExecutor.Results.Base;
 
-namespace Calabonga.ConsoleWorker.Workers.Base;
+namespace Calabonga.WorkExecutor.Base;
 
 /// <summary>
 /// Work to do
@@ -21,6 +21,16 @@ public interface IWork
     /// Friendly name
     /// </summary>
     string DisplayName { get; }
+
+    /// <summary>
+    /// User-friendly work name
+    /// </summary>
+    /// <returns></returns>
+    string GetName()
+    {
+        var name = string.IsNullOrEmpty(DisplayName) ? "WORK" : DisplayName;
+        return $"{name}";
+    }
 }
 
 /// <summary>

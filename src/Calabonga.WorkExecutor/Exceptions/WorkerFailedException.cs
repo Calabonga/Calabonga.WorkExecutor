@@ -1,5 +1,8 @@
-﻿namespace Calabonga.ConsoleWorker.Workers.Exceptions;
+﻿namespace Calabonga.WorkExecutor.Exceptions;
 
+/// <summary>
+/// WorkExecutor fail exception
+/// </summary>
 public class WorkerFailedException : InvalidOperationException
 {
     public WorkerFailedException() { }

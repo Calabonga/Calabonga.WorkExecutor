@@ -1,27 +1,17 @@
-﻿using Calabonga.ConsoleWorker.Workers;
-using Calabonga.ConsoleWorker.Workers.Base;
-using Calabonga.ConsoleWorker.Workers.Configurations;
+﻿using Calabonga.WorkExecutor;
+using Calabonga.WorkExecutor.Base;
+using Calabonga.WorkExecutor.Configurations;
 using Microsoft.Extensions.Logging;
 
 namespace Calabonga.ConsoleWorker.App;
 
-public class DefaultWorkExecutor : WorkExecutor<AddressResult, DefaultWorkerConfiguration>
+public class DefaultWorkExecutor : WorkExecutor<AddressResult, IWorkerConfiguration>
 {
     public DefaultWorkExecutor(
         IEnumerable<IWork<AddressResult>> works,
-        DefaultWorkerConfiguration configuration,
-        ILogger<WorkExecutor<AddressResult, DefaultWorkerConfiguration>> logger)
+        IWorkerConfiguration configuration,
+        ILogger<WorkExecutor<AddressResult, IWorkerConfiguration>> logger)
         : base(works, configuration, logger)
     {
     }
-}
-
-public class AddressResult
-{
-    public AddressResult(string address)
-    {
-        Address = address;
-    }
-
-    public string Address { get; }
 }

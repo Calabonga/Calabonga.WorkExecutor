@@ -1,16 +1,16 @@
-﻿using Calabonga.ConsoleWorker.Workers.Base;
-using Calabonga.ConsoleWorker.Workers.Results.Base;
+﻿using Calabonga.WorkExecutor.Base;
+using Calabonga.WorkExecutor.Results.Base;
 
-namespace Calabonga.ConsoleWorker.Workers.Results;
+namespace Calabonga.WorkExecutor.Results;
 
 /// <summary>
-/// Work triggered result
+/// Work triggered result Cancelled
 /// </summary>
 public sealed class WorkCancelledReport<T> : WorkReport<T>
 {
     public WorkCancelledReport(IWork work) : base(work)
     {
-        Errors = [$"Work {Work.DisplayName} ({Work.Name}) cancelled by cancellation token."];
+        Errors = [$"[EXECUTOR] {Work.GetName()} cancelled by cancellation token."];
     }
 
     /// <summary>

@@ -1,6 +1,6 @@
-﻿using Calabonga.ConsoleWorker.Workers.Base;
+﻿using Calabonga.WorkExecutor.Base;
 
-namespace Calabonga.ConsoleWorker.Workers.Results.Base;
+namespace Calabonga.WorkExecutor.Results.Base;
 
 /// <summary>
 /// Base class for work result
@@ -33,11 +33,4 @@ public abstract class WorkReport<T> : IWorkReport<T>
     /// Indicates that the rule is fired
     /// </summary>
     private bool IsFired => Work != null && !Errors.Any();
-
-    protected string GetWorkName()
-    {
-        return Work is null
-            ? "NoWork"
-            : $"{Work.DisplayName} ({Work.Name})";
-    }
 }

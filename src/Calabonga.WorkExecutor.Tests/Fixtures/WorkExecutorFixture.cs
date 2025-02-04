@@ -1,6 +1,5 @@
 ﻿using Calabonga.ConsoleWorker.App;
-using Calabonga.ConsoleWorker.Workers;
-using Calabonga.ConsoleWorker.Workers.Configurations;
+using Calabonga.WorkExecutor.Configurations;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -8,8 +7,8 @@ namespace Calabonga.WorkExecutor.Tests.Fixtures;
 
 public sealed class WorkExecutorFixture
 {
-    public Mock<ILogger<WorkExecutor<AddressResult, DefaultWorkerConfiguration>>> GetLogger()
+    public Mock<ILogger<WorkExecutor<AddressResult, IWorkerConfiguration>>> GetLogger()
     {
-        return new Mock<ILogger<WorkExecutor<AddressResult, DefaultWorkerConfiguration>>>();
+        return new Mock<ILogger<WorkExecutor<AddressResult, IWorkerConfiguration>>>();
     }
 }

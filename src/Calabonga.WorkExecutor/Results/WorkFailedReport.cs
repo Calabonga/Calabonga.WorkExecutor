@@ -1,7 +1,7 @@
-﻿using Calabonga.ConsoleWorker.Workers.Base;
-using Calabonga.ConsoleWorker.Workers.Results.Base;
+﻿using Calabonga.WorkExecutor.Base;
+using Calabonga.WorkExecutor.Results.Base;
 
-namespace Calabonga.ConsoleWorker.Workers.Results;
+namespace Calabonga.WorkExecutor.Results;
 
 /// <summary>
 /// Rule triggered result
@@ -10,13 +10,11 @@ public sealed class WorkFailedReport<T> : WorkReport<T>
 {
     public WorkFailedReport(Exception exception, IWork? work) : base(work)
     {
-        Errors = [$"{GetWorkName()} thrown an exception: {exception.Message}"];
+        Errors = [$"[EXECUTOR] {work?.GetName()} thrown an exception: {exception.Message}"];
     }
 
     /// <summary>
     /// Validation message text
     /// </summary>
     public override IEnumerable<string> Errors { get; }
-
-
 }

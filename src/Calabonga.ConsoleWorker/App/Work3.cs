@@ -4,11 +4,11 @@ using Calabonga.WorkExecutor.Results.Base;
 
 namespace Calabonga.ConsoleWorker.App;
 
-public class Work2 : WorkBase<AddressResult>
+public class Work3 : WorkBase<AddressResult>
 {
-    public override int OrderIndex => 2;
+    public override int OrderIndex => 3;
 
-    public override string DisplayName => "Work Two";
+    public override string DisplayName => "Work Three";
 
     public override async Task<IWorkReport<AddressResult>> RunWorkAsync(CancellationToken cancellationToken)
     {

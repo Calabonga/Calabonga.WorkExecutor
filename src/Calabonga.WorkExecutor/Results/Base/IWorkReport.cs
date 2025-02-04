@@ -1,9 +1,9 @@
-﻿namespace Calabonga.ConsoleWorker.Workers.Results.Base;
+﻿namespace Calabonga.WorkExecutor.Results.Base;
 
 /// <summary>
-/// // Calabonga: Summary required (IWorkReport 2025-02-02 07:44)
+/// Work report abstraction
 /// </summary>
-public interface IWorkResult
+public interface IWorkReport
 {
     /// <summary>
     /// Work messages text
@@ -17,9 +17,9 @@ public interface IWorkResult
 }
 
 /// <summary>
-/// Work result interface
+/// Work report generic abstraction
 /// </summary>
-public interface IWorkReport<out T> : IWorkResult
+public interface IWorkReport<out T> : IWorkReport
 {
     /// <summary>
     ///  WorkReport that has been obtained

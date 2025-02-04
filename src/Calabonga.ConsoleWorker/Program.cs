@@ -1,8 +1,8 @@
 ﻿using Calabonga.ConsoleWorker;
 using Calabonga.ConsoleWorker.App;
-using Calabonga.ConsoleWorker.Workers.Base;
-using Calabonga.ConsoleWorker.Workers.Configurations;
 using Calabonga.Utils.Extensions;
+using Calabonga.WorkExecutor.Base;
+using Calabonga.WorkExecutor.Configurations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -10,26 +10,43 @@ using Microsoft.Extensions.Logging;
 var container = ConsoleApp.CreateContainer(x =>
 {
     x.AddSingleton<DefaultWorkExecutor>();
-    x.AddTransient<DefaultWorkerConfiguration>();
+    x.AddTransient<IWorkerConfiguration, DefaultWorkerConfiguration>();
     x.AddTransient<IWork<AddressResult>, Work1>();
     x.AddTransient<IWork<AddressResult>, Work2>();
+    x.AddTransient<IWork<AddressResult>, Work3>();
 });
 
 var logger = container.GetRequiredService<ILogger<Program>>();
-var manager = container.GetRequiredService<DefaultWorkExecutor>();
+var executor = container.GetRequiredService<DefaultWorkExecutor>();
 
-logger.LogInformation("Starting...");
-logger.LogInformation("Total Works: {0}", manager.Works.Count);
-logger.LogInformation("Manager timeout: {0}", manager.Configuration.ExecutionTimeout);
+logger.LogInformation("Starting WorkExecutor...");
+logger.LogInformation("Total Works: {0}", executor.Works.Count);
+logger.LogInformation("WorkExecutor configuration timeout: {0}", executor.Configuration.ExecutionTimeout);
 
 var cancellationTokenSource = new CancellationTokenSource();
 
-AsyncHelper.RunSync(async () => await manager.ExecuteAsync(cancellationTokenSource.Token));
+AsyncHelper.RunSync(async () => await executor.ExecuteAsync(cancellationTokenSource.Token));
 
-if (manager is { HasReport: false })
+if (executor is { IsSuccess: false })
 {
-    logger.LogInformation("No result found");
+    foreach (var error in executor.Errors)
+    {
+        logger.LogError(error);
+    }
+
+    Console.ReadKey();
     return;
 }
 
-logger.LogInformation(manager.Result!.Address);
+logger.LogInformation("WORK SUCCESS: {0}", executor.Result!.Address);
+
+if (executor.Errors.Any())
+{
+    logger.LogInformation("But some errors occured:");
+    foreach (var error in executor.Errors)
+    {
+        logger.LogWarning($" -> {error}");
+    }
+}
+
+

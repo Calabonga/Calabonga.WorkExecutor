@@ -1,5 +1,5 @@
 ﻿using Calabonga.ConsoleWorker.App;
-using Calabonga.ConsoleWorker.Workers.Configurations;
+using Calabonga.WorkExecutor.Configurations;
 using Calabonga.WorkExecutor.Tests.Fixtures;
 using Xunit.Abstractions;
 
