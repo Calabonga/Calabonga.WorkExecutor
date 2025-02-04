@@ -4,6 +4,9 @@ using Calabonga.WorkExecutor.Results.Base;
 
 namespace Calabonga.ConsoleWorker.App;
 
+/// <summary>
+/// Demo Work3 for <see cref="AddressWorkExecutor"/>
+/// </summary>
 public class Work3 : WorkBase<AddressResult>
 {
     public override int OrderIndex => 3;
@@ -12,7 +15,7 @@ public class Work3 : WorkBase<AddressResult>
 
     public override async Task<IWorkReport<AddressResult>> RunWorkAsync(CancellationToken cancellationToken)
     {
-        await Task.Delay(3000, cancellationToken);
+        await Task.Delay(3000, cancellationToken); //Delay for request emulation
         var random = Random.Shared.Next(0, 100);
 
         return random switch

@@ -15,7 +15,7 @@ public class Work1 : WorkBase<AddressResult>
 
     public override async Task<IWorkReport<AddressResult>> RunWorkAsync(CancellationToken cancellationToken)
     {
-        await Task.Delay(3000, cancellationToken);
+        await Task.Delay(3000, cancellationToken); //Delay for request emulation
         var random = Random.Shared.Next(0, 100);
 
         return random switch
