@@ -3,7 +3,7 @@
 /// <summary>
 /// WorkExecutor configuration abstraction
 /// </summary>
-public interface IWorkerConfiguration
+public interface IWorkExecutorConfiguration
 {
     /// <summary>
     /// Timeout for work executing. When null then worker will not cancel running works.

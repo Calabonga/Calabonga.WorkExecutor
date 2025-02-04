@@ -9,15 +9,15 @@ using Microsoft.Extensions.Logging;
 // container
 var container = ConsoleApp.CreateContainer(x =>
 {
-    x.AddSingleton<DefaultWorkExecutor>();
-    x.AddTransient<IWorkerConfiguration, DefaultWorkerConfiguration>();
+    x.AddSingleton<AddressWorkExecutor>();
+    x.AddTransient<IWorkExecutorConfiguration, DefaultWorkExecutorConfiguration>();
     x.AddTransient<IWork<AddressResult>, Work1>();
     x.AddTransient<IWork<AddressResult>, Work2>();
     x.AddTransient<IWork<AddressResult>, Work3>();
 });
 
 var logger = container.GetRequiredService<ILogger<Program>>();
-var executor = container.GetRequiredService<DefaultWorkExecutor>();
+var executor = container.GetRequiredService<AddressWorkExecutor>();
 
 logger.LogInformation("Starting WorkExecutor...");
 logger.LogInformation("Total Works: {0}", executor.Works.Count);
@@ -34,7 +34,6 @@ if (executor is { IsSuccess: false })
         logger.LogError(error);
     }
 
-    Console.ReadKey();
     return;
 }
 

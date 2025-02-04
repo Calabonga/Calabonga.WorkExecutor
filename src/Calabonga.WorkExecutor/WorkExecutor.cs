@@ -14,7 +14,7 @@ namespace Calabonga.WorkExecutor;
 /// <typeparam name="TConfiguration"></typeparam>
 public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TResult>
     where TResult : class
-    where TConfiguration : IWorkerConfiguration
+    where TConfiguration : IWorkExecutorConfiguration
 {
     private readonly TConfiguration _configuration;
     private IWorkReport<TResult>? _workReport;
@@ -30,7 +30,7 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     /// <summary>
     /// Current Worker configuration
     /// </summary>
-    public IWorkerConfiguration Configuration => _configuration;
+    public IWorkExecutorConfiguration Configuration => _configuration;
 
     /// <summary>
     /// Represents the result of the WorkExecutor obtained from the work first success completed

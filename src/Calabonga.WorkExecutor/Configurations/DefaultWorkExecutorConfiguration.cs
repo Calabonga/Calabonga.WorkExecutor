@@ -3,7 +3,7 @@
 /// <summary>
 /// Default Worker configuration with timeout defined
 /// </summary>
-public class DefaultWorkerConfiguration : IWorkerConfiguration
+public class DefaultWorkExecutorConfiguration : IWorkExecutorConfiguration
 {
     public TimeSpan? ExecutionTimeout => TimeSpan.FromMilliseconds(10000);
 }

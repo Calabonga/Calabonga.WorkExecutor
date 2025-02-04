@@ -7,8 +7,8 @@ namespace Calabonga.WorkExecutor.Tests.Fixtures;
 
 public sealed class WorkExecutorFixture
 {
-    public Mock<ILogger<WorkExecutor<AddressResult, IWorkerConfiguration>>> GetLogger()
+    public Mock<ILogger<WorkExecutor<AddressResult, IWorkExecutorConfiguration>>> GetLogger()
     {
-        return new Mock<ILogger<WorkExecutor<AddressResult, IWorkerConfiguration>>>();
+        return new Mock<ILogger<WorkExecutor<AddressResult, IWorkExecutorConfiguration>>>();
     }
 }
