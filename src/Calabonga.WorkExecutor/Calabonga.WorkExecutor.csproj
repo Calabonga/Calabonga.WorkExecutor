@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>$(AssemblyName)</Title>
+		<Version>1.0.0-beta.1</Version>
+		<Authors>Calabonga</Authors>
+		<Company>Calabonga Soft</Company>
+		<Product>$(AssemblyName)</Product>
+		<Description>Work executor that must return the same result, but, for example, from different sources.</Description>
+		<Copyright>Calabonga SOFT © 2001-$([System.DateTime]::Now.ToString(yyyy))</Copyright>
+		<PackageProjectUrl>https://github.com/Calabonga/Calabonga.WorkExecutor</PackageProjectUrl>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/Calabonga/Calabonga.WorkExecutor</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>calabonga;worker;job;sequence;configuration;resulting</PackageTags>
+		<PackageReleaseNotes>First prerelease</PackageReleaseNotes>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<IncludeSymbols>False</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Deterministic>true</Deterministic>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+
+</Project>
