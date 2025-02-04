@@ -2,5 +2,5 @@
 
 public class DefaultWorkerConfiguration : IWorkerConfiguration
 {
-    public TimeSpan ExecutionTimeout => TimeSpan.FromMilliseconds(3000);
+    public TimeSpan? ExecutionTimeout => TimeSpan.FromMilliseconds(3000);
 }

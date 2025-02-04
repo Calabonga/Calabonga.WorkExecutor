@@ -2,5 +2,5 @@
 
 public interface IWorkerConfiguration
 {
-    TimeSpan ExecutionTimeout { get; }
+    TimeSpan? ExecutionTimeout { get; }
 }
