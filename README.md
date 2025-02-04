@@ -144,5 +144,26 @@ Let's create a WorkExecutor that can find an Address from some remote services.
     ```
 
    
-9. You can create as many work for WorkExecutor as you want, and WorkExecutors can create as much as you want too. 
-10. Have a nice coding, friends!
+9. You can create as many work for WorkExecutor as you want, and WorkExecutors can create as much as you want too.
+10. Some screenshots about how sampe works:
+
+`Work One`  done with success:
+
+![image](https://github.com/user-attachments/assets/67cf166a-04de-4a65-9425-cdb33caacba8)
+
+`Work One` failed, but `Work Two` successfully completed:
+
+![image](https://github.com/user-attachments/assets/4162ad10-bdca-4177-af27-46d0a4c2c05d)
+
+`Work One` and `Work Two` failed, but we have the `Work Three` with successful result:
+
+![image](https://github.com/user-attachments/assets/b1c719f7-df26-4b7e-91ae-0d83716409a7)
+
+All works were filed: `Work One`, `Work Two` and `Work Three`:
+
+![image](https://github.com/user-attachments/assets/558a3517-a045-45f2-a930-c044af2c5cc2)
+
+
+
+
+11. Have a nice coding, friends!
