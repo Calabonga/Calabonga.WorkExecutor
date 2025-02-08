@@ -178,16 +178,23 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
             {
                 case false:
                     Logger.LogError("[EXECUTOR] Executing {0} is failed: {1}", work.Name, result.Errors);
+                    ProcessWork(work, result);
                     works.RemoveFirst();
                     break;
 
                 case true:
                     Logger.LogDebug("[EXECUTOR] Executing {0} is success.", work.Name);
+                    ProcessWork(work, result);
                     works.Clear();
                     break;
             }
 
         } while (works.Count > 0);
+    }
+
+    protected virtual void ProcessWork(IWork<TResult> work, IWorkReport<TResult> result)
+    {
+
     }
 
     #region privates

@@ -20,7 +20,7 @@ public class AddressWorkExecutorTests : IClassFixture<WorkExecutorFixture>
     public async Task Test1()
     {
         var logger = _fixture.GetLogger();
-        var executor = new AddressWorkExecutor([], new DefaultWorkExecutorConfiguration(), logger.Object);
+        var executor = new AddressWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
 
         await executor.ExecuteAsync(CancellationToken.None);
 
@@ -31,7 +31,7 @@ public class AddressWorkExecutorTests : IClassFixture<WorkExecutorFixture>
     public async Task Test2()
     {
         var logger = _fixture.GetLogger();
-        var executor = new AddressWorkExecutor([], new DefaultWorkExecutorConfiguration(), logger.Object);
+        var executor = new AddressWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
 
         await executor.ExecuteAsync(CancellationToken.None);
 
@@ -44,7 +44,7 @@ public class AddressWorkExecutorTests : IClassFixture<WorkExecutorFixture>
     {
         const string expected = "No works were registered for AddressWorkExecutor";
         var logger = _fixture.GetLogger();
-        var executor = new AddressWorkExecutor([], new DefaultWorkExecutorConfiguration(), logger.Object);
+        var executor = new AddressWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
 
         await executor.ExecuteAsync(CancellationToken.None);
         var actual = executor.Errors.First();

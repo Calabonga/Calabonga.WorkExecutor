@@ -28,4 +28,12 @@ public class Work3 : WorkBase<AddressResult>
     }
 
     public override TimeSpan Timeout => TimeSpan.FromSeconds(5);
+
+    protected override IWorkMetadata GetMetadata()
+    {
+        return new AddressResultMetadata
+        {
+            Cost = 44.6d
+        };
+    }
 }

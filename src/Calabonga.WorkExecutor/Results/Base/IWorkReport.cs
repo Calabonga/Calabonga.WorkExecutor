@@ -19,11 +19,11 @@ public interface IWorkReport
 /// <summary>
 /// Work report generic abstraction
 /// </summary>
-public interface IWorkReport<out T> : IWorkReport
+public interface IWorkReport<out TResult> : IWorkReport
 {
     /// <summary>
     ///  WorkReport that has been obtained
     /// </summary>
-    T? Result { get; }
+    TResult? Result { get; }
 
 }
