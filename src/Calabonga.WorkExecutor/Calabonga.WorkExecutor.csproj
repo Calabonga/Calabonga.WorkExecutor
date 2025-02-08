@@ -18,7 +18,7 @@
 		<RepositoryUrl>https://github.com/Calabonga/Calabonga.WorkExecutor</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>calabonga;worker;job;sequence;configuration;resulting</PackageTags>
-		<PackageReleaseNotes>First prerelease</PackageReleaseNotes>
+		<PackageReleaseNotes>First release</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>False</IncludeSymbols>
 		<IncludeSource>true</IncludeSource>
@@ -32,12 +32,9 @@
 
 	<ItemGroup>
 		<None Include="..\..\README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="logo.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
