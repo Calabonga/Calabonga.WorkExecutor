@@ -36,8 +36,8 @@ public interface IWork
 /// <summary>
 /// Work with result
 /// </summary>
-/// <typeparam name="T"></typeparam>
-public interface IWork<T> : IWork
+/// <typeparam name="TResult"></typeparam>
+public interface IWork<TResult> : IWork
 {
     /// <summary>
     /// Timeout after that current work become expired (failed)
@@ -45,9 +45,15 @@ public interface IWork<T> : IWork
     TimeSpan Timeout { get; }
 
     /// <summary>
+    /// Returns from work configuration <see cref="IWorkMetadata"/>
+    /// </summary>
+    /// <returns></returns>
+    IWorkMetadata? Metadata { get; }
+
+    /// <summary>
     /// Runs current work
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IWorkReport<T>> RunWorkAsync(CancellationToken cancellationToken);
+    Task<IWorkReport<TResult>> RunWorkAsync(CancellationToken cancellationToken);
 }
