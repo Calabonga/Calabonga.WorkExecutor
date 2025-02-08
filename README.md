@@ -4,6 +4,11 @@
 
 ## What's new
 
+### 2025-02-08 v1.0.0
+
+* Metadata for each work processing implemented as `IWorkMetadata`;
+* Metadata `IWorkMetadata` processing injected into `WorkExecutor<T>` base class.
+
 ### 2025-02-04 v1.0.0 beta.2 
 
 * First prerelease.
