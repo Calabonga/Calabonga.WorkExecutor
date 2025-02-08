@@ -45,6 +45,12 @@ public interface IWork<TResult> : IWork
     TimeSpan Timeout { get; }
 
     /// <summary>
+    /// Returns from work configuration <see cref="IWorkMetadata"/>
+    /// </summary>
+    /// <returns></returns>
+    IWorkMetadata? Metadata { get; }
+
+    /// <summary>
     /// Runs current work
     /// </summary>
     /// <param name="cancellationToken"></param>

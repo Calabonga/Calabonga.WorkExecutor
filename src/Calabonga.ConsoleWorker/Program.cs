@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 // container
 var container = ConsoleApp.CreateContainer(x =>
 {
-    x.AddSingleton<DefaultWorkExecutor>();
+    x.AddSingleton<AddressWorkExecutor>();
     x.AddTransient<IWorkerConfiguration, DefaultWorkerConfiguration>();
     x.AddTransient<IWork<AddressResult>, Work1>();
     x.AddTransient<IWork<AddressResult>, Work2>();
@@ -17,7 +17,7 @@ var container = ConsoleApp.CreateContainer(x =>
 });
 
 var logger = container.GetRequiredService<ILogger<Program>>();
-var executor = container.GetRequiredService<DefaultWorkExecutor>();
+var executor = container.GetRequiredService<AddressWorkExecutor>();
 
 logger.LogInformation("Starting WorkExecutor...");
 logger.LogInformation("Total Works: {0}", executor.Works.Count);
@@ -49,4 +49,13 @@ if (executor.Errors.Any())
     }
 }
 
+foreach (var work in executor.Works)
+{
+    if (work.Metadata is not AddressResultMetadata metadata)
+    {
+        logger.LogInformation("{0} has no metadata", work.Name);
+        continue;
+    }
 
+    logger.LogInformation("Work1 COST {0} x QUANTITY {1} = TOTAL {2}", metadata.Cost, metadata.Quantity, metadata.Quantity * metadata.Cost);
+}

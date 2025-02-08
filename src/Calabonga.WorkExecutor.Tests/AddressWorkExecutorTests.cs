@@ -5,12 +5,12 @@ using Xunit.Abstractions;
 
 namespace Calabonga.WorkExecutor.Tests;
 
-public class DefaultWorkExecutorTests : IClassFixture<WorkExecutorFixture>
+public class AddressWorkExecutorTests : IClassFixture<WorkExecutorFixture>
 {
     private readonly WorkExecutorFixture _fixture;
     private readonly ITestOutputHelper _outputHelper;
 
-    public DefaultWorkExecutorTests(WorkExecutorFixture fixture, ITestOutputHelper outputHelper)
+    public AddressWorkExecutorTests(WorkExecutorFixture fixture, ITestOutputHelper outputHelper)
     {
         _fixture = fixture;
         _outputHelper = outputHelper;
@@ -20,7 +20,7 @@ public class DefaultWorkExecutorTests : IClassFixture<WorkExecutorFixture>
     public async Task Test1()
     {
         var logger = _fixture.GetLogger();
-        var executor = new DefaultWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
+        var executor = new AddressWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
 
         await executor.ExecuteAsync(CancellationToken.None);
 
@@ -31,7 +31,7 @@ public class DefaultWorkExecutorTests : IClassFixture<WorkExecutorFixture>
     public async Task Test2()
     {
         var logger = _fixture.GetLogger();
-        var executor = new DefaultWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
+        var executor = new AddressWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
 
         await executor.ExecuteAsync(CancellationToken.None);
 
@@ -42,9 +42,9 @@ public class DefaultWorkExecutorTests : IClassFixture<WorkExecutorFixture>
     [Fact]
     public async Task Test3()
     {
-        const string expected = "No works were registered for DefaultWorkExecutor";
+        const string expected = "No works were registered for AddressWorkExecutor";
         var logger = _fixture.GetLogger();
-        var executor = new DefaultWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
+        var executor = new AddressWorkExecutor([], new DefaultWorkerConfiguration(), logger.Object);
 
         await executor.ExecuteAsync(CancellationToken.None);
         var actual = executor.Errors.First();

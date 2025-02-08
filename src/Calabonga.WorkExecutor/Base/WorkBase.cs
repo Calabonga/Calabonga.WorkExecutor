@@ -5,12 +5,18 @@ using Microsoft.Extensions.Logging;
 
 namespace Calabonga.WorkExecutor.Base;
 
-/// <summary>
-///Default <see cref="IWork{T}"/> implementation with general functionality
-/// </summary>
-/// <typeparam name="TResult"></typeparam>
-public abstract class WorkBase<TResult> : IWork<TResult> where TResult : class
+///  <summary>
+/// Default <see cref="IWork{T}"/> implementation with general functionality
+///  </summary>
+///  <typeparam name="TResult"></typeparam>
+public abstract class WorkBase<TResult> : IWork<TResult>
+    where TResult : class
 {
+    protected WorkBase()
+    {
+        PrepareMetadata();
+    }
+
     /// <summary>
     /// Index sorting
     /// </summary>
@@ -30,6 +36,11 @@ public abstract class WorkBase<TResult> : IWork<TResult> where TResult : class
     /// Name for the rule
     /// </summary>
     public string Name => ((IWork)this).GetName();
+
+    /// <summary>
+    /// Metadata for work customization
+    /// </summary>
+    public IWorkMetadata? Metadata { get; private set; }
 
     /// <summary>
     /// Runs current work
@@ -68,5 +79,19 @@ public abstract class WorkBase<TResult> : IWork<TResult> where TResult : class
             executor.SetResult(new WorkFailedReport<TResult>(new WorkerFailedException($"{Name} failed: {exception.Message}", exception), this));
             return new WorkFailedReport<TResult>(exception, this);
         }
+    }
+
+    /// <summary>
+    /// Returns from work configuration <see cref="IWorkMetadata"/>
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IWorkMetadata? GetMetadata()
+    {
+        return null;
+    }
+
+    private void PrepareMetadata()
+    {
+        Metadata = GetMetadata();
     }
 }
