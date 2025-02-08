@@ -6,12 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Calabonga.ConsoleWorker.App;
 
-public class AddressWorkExecutor : WorkExecutor<AddressResult, IWorkerConfiguration>
+public class AddressWorkExecutor : WorkExecutor<AddressResult, DefaultConfiguration>
 {
     public AddressWorkExecutor(
         IEnumerable<IWork<AddressResult>> works,
-        IWorkerConfiguration configuration,
-        ILogger<WorkExecutor<AddressResult, IWorkerConfiguration>> logger)
+        DefaultConfiguration configuration,
+        ILogger<WorkExecutor<AddressResult, DefaultConfiguration>> logger)
         : base(works, configuration, logger)
     {
     }

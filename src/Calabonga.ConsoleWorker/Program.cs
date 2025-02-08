@@ -10,8 +10,7 @@ using Microsoft.Extensions.Logging;
 var container = ConsoleApp.CreateContainer(x =>
 {
     x.AddSingleton<AddressWorkExecutor>();
-    x.AddTransient<IWorkExecutorConfiguration, DefaultWorkExecutorConfiguration>();
-    x.AddTransient<IWorkerConfiguration, DefaultWorkerConfiguration>();
+    x.AddTransient<DefaultConfiguration>();
     x.AddTransient<IWork<AddressResult>, Work1>();
     x.AddTransient<IWork<AddressResult>, Work2>();
     x.AddTransient<IWork<AddressResult>, Work3>();
