@@ -27,18 +27,21 @@ var cancellationTokenSource = new CancellationTokenSource();
 
 AsyncHelper.RunSync(async () => await executor.ExecuteAsync(cancellationTokenSource.Token));
 
+// show error when not success
 if (executor is { IsSuccess: false })
 {
     foreach (var error in executor.Errors)
     {
         logger.LogError(error);
     }
-    
+
     return;
 }
 
+// show result
 logger.LogInformation("WORK SUCCESS: {0}", executor.Result!.Address);
 
+// show errors when success but errors
 if (executor.Errors.Any())
 {
     logger.LogInformation("But some errors occured:");
@@ -48,6 +51,7 @@ if (executor.Errors.Any())
     }
 }
 
+// show metadata information
 foreach (var work in executor.Works)
 {
     if (work.Metadata is not AddressResultMetadata metadata)
