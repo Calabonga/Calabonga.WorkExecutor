@@ -1,4 +1,4 @@
-﻿using Calabonga.WorkExecutor.Results.Base;
+﻿using Calabonga.WorkExecutor.Reports.Base;
 
 namespace Calabonga.WorkExecutor.Base;
 

@@ -1,6 +1,6 @@
 ﻿using Calabonga.WorkExecutor.Exceptions;
-using Calabonga.WorkExecutor.Results;
-using Calabonga.WorkExecutor.Results.Base;
+using Calabonga.WorkExecutor.Reports;
+using Calabonga.WorkExecutor.Reports.Base;
 using Microsoft.Extensions.Logging;
 
 namespace Calabonga.WorkExecutor.Base;

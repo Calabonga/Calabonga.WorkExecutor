@@ -1,6 +1,6 @@
 ﻿using Calabonga.WorkExecutor.Base;
-using Calabonga.WorkExecutor.Results;
-using Calabonga.WorkExecutor.Results.Base;
+using Calabonga.WorkExecutor.Reports;
+using Calabonga.WorkExecutor.Reports.Base;
 
 namespace Calabonga.ConsoleWorker.App;
 

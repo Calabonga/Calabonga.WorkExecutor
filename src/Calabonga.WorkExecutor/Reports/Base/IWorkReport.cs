@@ -1,4 +1,4 @@
-﻿namespace Calabonga.WorkExecutor.Results.Base;
+﻿namespace Calabonga.WorkExecutor.Reports.Base;
 
 /// <summary>
 /// Work report abstraction

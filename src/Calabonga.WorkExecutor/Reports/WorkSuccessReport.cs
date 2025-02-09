@@ -1,7 +1,7 @@
 ﻿using Calabonga.WorkExecutor.Base;
-using Calabonga.WorkExecutor.Results.Base;
+using Calabonga.WorkExecutor.Reports.Base;
 
-namespace Calabonga.WorkExecutor.Results;
+namespace Calabonga.WorkExecutor.Reports;
 
 /// <summary>
 /// Rule triggered result
@@ -12,9 +12,4 @@ public sealed class WorkSuccessReport<TResult> : WorkReport<TResult>
     {
         Result = result;
     }
-
-    /// <summary>
-    /// Validation message text
-    /// </summary>
-    public override IEnumerable<string> Errors => [];
 }

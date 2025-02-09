@@ -1,7 +1,7 @@
 ﻿using Calabonga.WorkExecutor;
 using Calabonga.WorkExecutor.Base;
 using Calabonga.WorkExecutor.Configurations;
-using Calabonga.WorkExecutor.Results.Base;
+using Calabonga.WorkExecutor.Reports.Base;
 using Microsoft.Extensions.Logging;
 
 namespace Calabonga.ConsoleWorker.App;
