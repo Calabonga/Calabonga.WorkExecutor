@@ -33,8 +33,7 @@ if (executor is { IsSuccess: false })
     {
         logger.LogError(error);
     }
-
-    Console.ReadKey();
+    
     return;
 }
 
