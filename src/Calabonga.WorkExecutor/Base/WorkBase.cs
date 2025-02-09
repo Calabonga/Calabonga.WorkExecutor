@@ -76,7 +76,7 @@ public abstract class WorkBase<TResult> : IWork<TResult>
         catch (Exception exception)
         {
             executor.Logger.LogDebug("[EXECUTOR] {Name} failed.", ((IWork)this).GetName());
-            executor.SetResult(new WorkFailedReport<TResult>(new WorkerFailedException($"{Name} failed: {exception.Message}", exception), this));
+            executor.SetResult(new WorkFailedReport<TResult>(new WorkExecutorException($"{Name} failed: {exception.Message}", exception), this));
             return new WorkFailedReport<TResult>(exception, this);
         }
     }

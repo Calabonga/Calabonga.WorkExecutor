@@ -20,7 +20,10 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     private IWorkReport<TResult>? _workReport;
     private readonly IList<string> _errors = [];
 
-    protected WorkExecutor(IEnumerable<IWork<TResult>> works, TConfiguration configuration, ILogger<WorkExecutor<TResult, TConfiguration>> logger)
+    protected WorkExecutor(
+        IEnumerable<IWork<TResult>> works, 
+        TConfiguration configuration, 
+        ILogger<WorkExecutor<TResult, TConfiguration>> logger)
     {
         Works = works.ToList();
         _configuration = configuration;
@@ -94,12 +97,13 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     {
         if (!HasWorks && dynamicWorks == null)
         {
-            var exception = new WorkerFailedException($"[EXECUTOR] No works were registered for {GetType().Name}");
+            var exception = new WorkExecutorException($"[EXECUTOR] No works were registered for {GetType().Name}");
             Logger.LogError(exception, exception.Message);
             _workReport = new WorkFailedReport<TResult>(exception, null);
+            return;
         }
 
-        PrepareAdditionalWorks(dynamicWorks);
+        PrepareDynamicWorks(dynamicWorks);
 
         var token = GetWorkerCancellationToken(cancellationToken);
         Logger.LogDebug("[EXECUTOR] Command cancellation token created");
@@ -125,7 +129,7 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     {
         if (works == null)
         {
-            throw new WorkerFailedException(nameof(works));
+            throw new WorkExecutorException(nameof(works));
         }
 
         if (!HasWorks)
@@ -159,39 +163,6 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
         _errors.Add(error);
     }
 
-    /// <summary>
-    /// Executes a work with some helpful wrappings
-    /// </summary>
-    /// <param name="works"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    private async Task DoWorkAsync(LinkedList<IWork<TResult>> works, CancellationToken cancellationToken)
-    {
-        do
-        {
-            var work = works.First();
-            Logger.LogDebug("[EXECUTOR] Current {0} in order {1}", work.Name, work.OrderIndex);
-
-            var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(cancellationToken, this).ConfigureAwait(false);
-
-            switch (result.IsSuccess)
-            {
-                case false:
-                    Logger.LogError("[EXECUTOR] Executing {0} is failed: {1}", work.Name, result.Errors);
-                    ProcessWork(work, result);
-                    works.RemoveFirst();
-                    break;
-
-                case true:
-                    Logger.LogDebug("[EXECUTOR] Executing {0} is success.", work.Name);
-                    ProcessWork(work, result);
-                    works.Clear();
-                    break;
-            }
-
-        } while (works.Count > 0);
-    }
-
     protected virtual void ProcessWork(IWork<TResult> work, IWorkReport<TResult> result)
     {
 
@@ -211,19 +182,54 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
         return cancellationTokenSource.Token;
     }
 
-    private void PrepareAdditionalWorks(IEnumerable<IWork<TResult>>? dynamicRules)
+    private void PrepareDynamicWorks(IEnumerable<IWork<TResult>>? dynamicRules)
     {
-        if (dynamicRules != null)
+        if (dynamicRules == null)
         {
-            foreach (var work in dynamicRules)
+            return;
+        }
+
+        foreach (var work in dynamicRules)
+        {
+            if (!Works.Contains(work))
             {
-                if (!Works.Contains(work))
-                {
-                    Logger.LogDebug("Work added {0}", work.Name);
-                    Works.Add(work);
-                }
+                Logger.LogDebug("Work added {0}", work.GetName());
+                Works.Add(work);
             }
         }
+    }
+
+    /// <summary>
+    /// Executes a work with some helpful wrappings
+    /// </summary>
+    /// <param name="works"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    private async Task DoWorkAsync(LinkedList<IWork<TResult>> works, CancellationToken cancellationToken)
+    {
+        do
+        {
+            var work = works.First();
+            Logger.LogDebug("[EXECUTOR] Current {0} in order {1}", work.GetName(), work.OrderIndex);
+
+            var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(cancellationToken, this).ConfigureAwait(false);
+
+            switch (result.IsSuccess)
+            {
+                case false:
+                    Logger.LogError("[EXECUTOR] Executing {0} is failed: {1}", work.GetName(), result.Errors);
+                    ProcessWork(work, result);
+                    works.RemoveFirst();
+                    break;
+
+                case true:
+                    Logger.LogDebug("[EXECUTOR] Executing {0} is success.", work.GetName());
+                    ProcessWork(work, result);
+                    works.Clear();
+                    break;
+            }
+
+        } while (works.Count > 0);
     }
 
     #endregion
