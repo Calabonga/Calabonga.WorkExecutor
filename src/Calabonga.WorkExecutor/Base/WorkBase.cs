@@ -67,17 +67,20 @@ public abstract class WorkBase<TResult> : IWork<TResult>
 
             return result;
         }
-        catch (OperationCanceledException)
+        catch (TaskCanceledException)
         {
             executor.Logger.LogDebug("[EXECUTOR] {Name} cancelled.", ((IWork)this).GetName());
-            executor.SetResult(new WorkErrorReport<TResult>([$"{Name} cancelled by timeout."], this));
-            return new WorkCancelledReport<TResult>(this);
+            var cancelled = new WorkCancelledReport<TResult>(this);
+            executor.SetResult(cancelled);
+            return cancelled;
         }
         catch (Exception exception)
         {
             executor.Logger.LogDebug("[EXECUTOR] {Name} failed.", ((IWork)this).GetName());
-            executor.SetResult(new WorkFailedReport<TResult>(new WorkExecutorException($"{Name} failed: {exception.Message}", exception), this));
-            return new WorkFailedReport<TResult>(exception, this);
+            var error = new WorkFailedReport<TResult>(exception, this);
+            executor.SetResult(error);
+
+            return error;
         }
     }
 
