@@ -8,7 +8,7 @@ public interface IWorkReport
     /// <summary>
     /// Work messages text
     /// </summary>
-    public IEnumerable<string> Errors { get; }
+    IEnumerable<string> Errors { get; }
 
     /// <summary>
     /// Indicates work successfully completed and the WorkReport has been obtained

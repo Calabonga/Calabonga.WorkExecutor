@@ -5,7 +5,7 @@ namespace Calabonga.WorkExecutor.Results.Base;
 /// <summary>
 /// Base class for work result
 /// </summary>
-public abstract class WorkReport<T> : IWorkReport<T>
+public abstract class WorkReport<TResult> : IWorkReport<TResult>
 {
     protected WorkReport(IWork? work)
     {
@@ -15,22 +15,19 @@ public abstract class WorkReport<T> : IWorkReport<T>
     /// <summary>
     /// WorkReport that has been obtained
     /// </summary>
-    public T? Result { get; protected init; }
+    public TResult? Result { get; protected init; }
 
-    public abstract IEnumerable<string> Errors { get; }
+    /// <summary>
+    /// Work messages text
+    /// </summary>
+    public abstract IEnumerable<string> Errors { get; } 
 
     /// <summary>
     /// Indicates work successfully completed and the WorkReport has been obtained
     /// </summary>
-    public bool IsSuccess => IsFired && !Errors.Any() && Result is not null;
+    public bool IsSuccess => !Errors.Any() && Result is not null;
 
     /// <summary>
     /// Triggered Work
     /// </summary>
-    protected IWork? Work { get; private set; }
-
-    /// <summary>
-    /// Indicates that the rule is fired
-    /// </summary>
-    private bool IsFired => Work != null && !Errors.Any();
-}
+    protected IWork? Work { get; private set; } }

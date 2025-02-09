@@ -6,9 +6,9 @@ namespace Calabonga.WorkExecutor.Results;
 /// <summary>
 /// Rule triggered result
 /// </summary>
-public sealed class WorkSuccessReport<T> : WorkReport<T>
+public sealed class WorkSuccessReport<TResult> : WorkReport<TResult>
 {
-    public WorkSuccessReport(T result, IWork<T> work) : base(work)
+    public WorkSuccessReport(TResult result, IWork<TResult> work) : base(work)
     {
         Result = result;
     }

@@ -25,7 +25,7 @@ public abstract class WorkBase<TResult> : IWork<TResult>
     /// <summary>
     /// Friendly name
     /// </summary>
-    public abstract string DisplayName { get; }
+    public abstract string? DisplayName { get; }
 
     /// <summary>
     /// Timeout after that current work become expired (failed)

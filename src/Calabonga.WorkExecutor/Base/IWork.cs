@@ -20,7 +20,7 @@ public interface IWork
     /// <summary>
     /// Friendly name
     /// </summary>
-    string DisplayName { get; }
+    string? DisplayName { get; }
 
     /// <summary>
     /// User-friendly work name
@@ -28,8 +28,7 @@ public interface IWork
     /// <returns></returns>
     string GetName()
     {
-        var name = string.IsNullOrEmpty(DisplayName) ? "WORK" : DisplayName;
-        return $"{name}";
+        return string.IsNullOrEmpty(DisplayName) ? Name : DisplayName;
     }
 }
 

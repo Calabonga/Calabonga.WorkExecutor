@@ -33,14 +33,14 @@ public interface IWorkExecutor<TResult> where TResult : class
     /// Runs worker to do it work
     /// </summary>
     /// <param name="cancellationToken"></param>
-    /// <param name="dynamicRules"></param>
+    /// <param name="dynamicWorks"></param>
     /// <returns></returns>
-    Task ExecuteAsync(CancellationToken cancellationToken = default, IEnumerable<IWork<TResult>>? dynamicRules = null);
+    Task ExecuteAsync(CancellationToken cancellationToken = default, IEnumerable<IWork<TResult>>? dynamicWorks = null);
 
     /// <summary>
     /// Works which should be run to obtain a result
     /// </summary>
-    public List<IWork<TResult>> Works { get; }
+    List<IWork<TResult>> Works { get; }
 
     /// <summary>
     /// Indicated Result obtained

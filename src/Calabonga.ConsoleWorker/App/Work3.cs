@@ -11,7 +11,7 @@ public class Work3 : WorkBase<AddressResult>
 {
     public override int OrderIndex => 3;
 
-    public override string DisplayName => "Work Three";
+    public override string? DisplayName => "Work Three";
 
     public override async Task<IWorkReport<AddressResult>> RunWorkAsync(CancellationToken cancellationToken)
     {

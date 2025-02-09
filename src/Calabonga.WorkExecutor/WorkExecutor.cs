@@ -88,18 +88,18 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     /// Runs worker to do it work
     /// </summary>
     /// <param name="cancellationToken"></param>
-    /// <param name="dynamicRules"></param>
+    /// <param name="dynamicWorks"></param>
     /// <returns></returns>
-    public async Task ExecuteAsync(CancellationToken cancellationToken = default, IEnumerable<IWork<TResult>>? dynamicRules = null)
+    public async Task ExecuteAsync(CancellationToken cancellationToken = default, IEnumerable<IWork<TResult>>? dynamicWorks = null)
     {
-        if (!HasWorks && dynamicRules == null)
+        if (!HasWorks && dynamicWorks == null)
         {
             var exception = new WorkerFailedException($"[EXECUTOR] No works were registered for {GetType().Name}");
             Logger.LogError(exception, exception.Message);
             _workReport = new WorkFailedReport<TResult>(exception, null);
         }
 
-        PrepareAdditionalWorks(dynamicRules);
+        PrepareAdditionalWorks(dynamicWorks);
 
         var token = GetWorkerCancellationToken(cancellationToken);
         Logger.LogDebug("[EXECUTOR] Command cancellation token created");
