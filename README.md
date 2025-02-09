@@ -4,6 +4,13 @@
 
 ## What's new
 
+### 2025-02-09 v1.0.1
+
+* Syntax issues fixed.
+* Some modifiers updated.
+* Also, some renaming
+* And other minor refactoring were done.
+
 ### 2025-02-08 v1.0.0
 
 * Metadata for each work processing implemented as `IWorkMetadata`;
