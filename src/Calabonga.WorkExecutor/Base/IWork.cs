@@ -53,6 +53,7 @@ public interface IWork<TResult> : IWork
     /// Runs current work
     /// </summary>
     /// <param name="cancellationToken"></param>
+    /// <param name="parameters"></param>
     /// <returns></returns>
-    Task<IWorkReport<TResult>> RunWorkAsync(CancellationToken cancellationToken);
+    Task<IWorkReport<TResult>> RunWorkAsync(CancellationToken cancellationToken, object? parameters = null);
 }

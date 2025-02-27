@@ -1,4 +1,4 @@
-﻿using Calabonga.WorkExecutor.Base;
+using Calabonga.WorkExecutor.Base;
 using Calabonga.WorkExecutor.Configurations;
 using Calabonga.WorkExecutor.Exceptions;
 using Calabonga.WorkExecutor.Reports;
@@ -19,15 +19,22 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     private readonly TConfiguration _configuration;
     private IWorkReport<TResult>? _workReport;
     private readonly IList<string> _errors = [];
+    private object _parameters;
 
     protected WorkExecutor(
-        IEnumerable<IWork<TResult>> works, 
-        TConfiguration configuration, 
+        IEnumerable<IWork<TResult>> works,
+        TConfiguration configuration,
         ILogger<WorkExecutor<TResult, TConfiguration>> logger)
     {
         Works = works.ToList();
         _configuration = configuration;
         Logger = logger;
+    }
+
+    public WorkExecutor<TResult, TConfiguration> WithParameters(object parameters)
+    {
+        _parameters = parameters;
+        return this;
     }
 
     /// <summary>
@@ -112,7 +119,7 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
         {
             var items = Works.OrderBy(x => x.OrderIndex);
 
-            await DoWorkAsync(new LinkedList<IWork<TResult>>(items), token).ConfigureAwait(false);
+            await DoWorkAsync(new LinkedList<IWork<TResult>>(items), token, _parameters).ConfigureAwait(false);
         }
         catch (Exception exception)
         {
@@ -202,17 +209,18 @@ public abstract class WorkExecutor<TResult, TConfiguration> : IWorkExecutor<TRes
     /// <summary>
     /// Executes a work with some helpful wrappings
     /// </summary>
+    /// <param name="parameters"></param>
     /// <param name="works"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    private async Task DoWorkAsync(LinkedList<IWork<TResult>> works, CancellationToken cancellationToken)
+    private async Task DoWorkAsync(LinkedList<IWork<TResult>> works, CancellationToken cancellationToken, object? parameters = null)
     {
         do
         {
             var work = works.First();
             Logger.LogDebug("[EXECUTOR] Current {0} in order {1}", work.GetName(), work.OrderIndex);
 
-            var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(cancellationToken, this).ConfigureAwait(false);
+            var result = await ((WorkBase<TResult>)work).ExecuteWorkAsync(cancellationToken, this, parameters).ConfigureAwait(false);
 
             switch (result.IsSuccess)
             {
