@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
-		<Version>1.0.1</Version>
+		<Version>1.1.0</Version>
 		<Authors>Calabonga</Authors>
 		<Company>Calabonga Soft</Company>
 		<Product>$(AssemblyName)</Product>
@@ -18,7 +18,7 @@
 		<RepositoryUrl>https://github.com/Calabonga/Calabonga.WorkExecutor</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>calabonga;worker;job;sequence;configuration;resulting</PackageTags>
-		<PackageReleaseNotes>Syntax issues fixed. Some modifiers updated. Also, some renaming and other minor refactoring were done.</PackageReleaseNotes>
+		<PackageReleaseNotes>Additional parameters for work processing injected into WorkProcessor</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>False</IncludeSymbols>
 		<IncludeSource>true</IncludeSource>

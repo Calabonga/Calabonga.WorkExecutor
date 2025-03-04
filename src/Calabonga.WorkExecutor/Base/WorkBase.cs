@@ -1,5 +1,4 @@
-﻿using Calabonga.WorkExecutor.Exceptions;
-using Calabonga.WorkExecutor.Reports;
+﻿using Calabonga.WorkExecutor.Reports;
 using Calabonga.WorkExecutor.Reports.Base;
 using Microsoft.Extensions.Logging;
 
@@ -46,22 +45,24 @@ public abstract class WorkBase<TResult> : IWork<TResult>
     /// Runs current work
     /// </summary>
     /// <param name="cancellationToken"></param>
+    /// <param name="parameters"></param>
     /// <returns></returns>
-    public abstract Task<IWorkReport<TResult>> RunWorkAsync(CancellationToken cancellationToken);
+    public abstract Task<IWorkReport<TResult>> RunWorkAsync(CancellationToken cancellationToken, object? parameters);
 
     /// <summary>
     /// Internal execution for <see cref="IWork"/> <see cref="RunWorkAsync"/>
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <param name="executor"></param>
+    /// <param name="parameters"></param>
     /// <returns></returns>
-    protected internal async Task<IWorkReport<TResult>> ExecuteWorkAsync<TExecutor>(CancellationToken cancellationToken, TExecutor executor)
+    protected internal async Task<IWorkReport<TResult>> ExecuteWorkAsync<TExecutor>(CancellationToken cancellationToken, TExecutor executor, object? parameters)
         where TExecutor : IWorkExecutor<TResult>
     {
         try
         {
             executor.Logger.LogDebug("[EXECUTOR] Executing {Name}...", ((IWork)this).GetName());
-            var result = await RunWorkAsync(cancellationToken).ConfigureAwait(false);
+            var result = await RunWorkAsync(cancellationToken, parameters).ConfigureAwait(false);
             executor.Logger.LogDebug("[EXECUTOR] {Name} completed.", ((IWork)this).GetName());
             executor.SetResult(result);
 
